@@ -5,6 +5,13 @@ MAINTAINER DDCTeamWookie <DLDDCTeamWookie@auspost.com.au>
 
 USER root
 
+ARG NODE_VERSION
+ARG FIREFOX_VERSION
+ARG WEBDRIVER_VERSION
+ARG JAVA_VERSION
+ARG PHANTOMJS_VERSION
+ARG NODE_PACKAGES
+
 ARG NG_CLI_VERSION=1.6.4
 ARG USER_HOME_DIR="/tmp"
 ARG APP_DIR="/app"
@@ -14,6 +21,9 @@ ENV TZ="/usr/share/zoneinfo/Australia/Melbourne"
 
 ENV NPM_CONFIG_LOGLEVEL warn
 ENV HOME "$USER_HOME_DIR"
+
+RUN groupadd -g 10101 bamboo \
+    && useradd -m -r -s /bin/false -u 10101 -g 10101 -c "Bamboo Service User" bamboo
 
 RUN set -xe \
     && curl -sL https://github.com/Yelp/dumb-init/releases/download/v1.2.0/dumb-init_1.2.0_amd64 > /usr/bin/dumb-init \
@@ -29,10 +39,10 @@ RUN set -xe \
 
 # ----- headless installs
 
-ADD display-chromium /usr/bin/display-chromium
-ADD xvfb-chromium /usr/bin/xvfb-chromium
-ADD xvfb-chromium-webgl /usr/bin/xvfb-chromium-webgl
-ADD xvfb-run /usr/bin/xvfb-run
+ADD ./displays/display-chromium /usr/bin/display-chromium
+ADD ./displays/xvfb-chromium /usr/bin/xvfb-chromium
+ADD ./displays/xvfb-chromium-webgl /usr/bin/xvfb-chromium-webgl
+ADD ./displays/xvfb-run /usr/bin/xvfb-run
 
 RUN set -x \
     && apt-get -qqy update \
@@ -96,5 +106,7 @@ RUN /var/lib/dpkg/info/ca-certificates-java.postinst configure
 
 WORKDIR $APP_DIR
 EXPOSE 4200
+
+USER bamboo
 
 ENTRYPOINT ["/usr/bin/dumb-init", "--"]
