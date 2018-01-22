@@ -32,6 +32,7 @@ RUN set -xe \
 ADD display-chromium /usr/bin/display-chromium
 ADD xvfb-chromium /usr/bin/xvfb-chromium
 ADD xvfb-chromium-webgl /usr/bin/xvfb-chromium-webgl
+ADD xvfb-run /usr/bin/xvfb-run
 
 RUN set -x \
     && apt-get -qqy update \
@@ -44,6 +45,8 @@ RUN set -x \
       libosmesa6 \
       libgconf-2-4 \
       gnupg \
+      coreutils \
+      curl \
       wget \
       ca-certificates \
       apt-transport-https \
