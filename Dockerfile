@@ -107,6 +107,4 @@ RUN /var/lib/dpkg/info/ca-certificates-java.postinst configure
 WORKDIR $APP_DIR
 EXPOSE 4200
 
-USER bamboo
-
 ENTRYPOINT ["/usr/bin/dumb-init", "--"]
