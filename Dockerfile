@@ -2,7 +2,7 @@
 
 FROM node:8
 LABEL name="mypost-consumer-testing-docker" \
-      maintainer="DDCTeamWookie" \
+      maintainer="DDCTeamWookie <DLDDCTeamWookie@auspost.com.au>" \
       version="1.0" \
       description="The docker container for MyPost Consumer automated tests"
 
@@ -15,6 +15,7 @@ ENV CHROME_PACKAGE="google-chrome-stable_59.0.3071.115-1_amd64.deb" NODE_PATH=/u
 USER root
 
 ARG NG_CLI_VERSION=1.6.4
+ARG NODE_VERSION=6.12.2
 ARG USER_HOME_DIR="/tmp"
 ARG APP_DIR="/app"
 ARG USER_ID=1000
@@ -32,8 +33,10 @@ RUN set -xe \
     && mkdir -p dist/bin \
     && chown $USER_ID $USER_HOME_DIR \
     && chmod a+rw $USER_HOME_DIR \
-    && chown -R node /usr/local/lib /usr/local/include /usr/local/share /usr/local/bin \
-    && (cd "$USER_HOME_DIR"; su node -c "npm install -g @angular/cli@$NG_CLI_VERSION; npm install -g yarn; npm i -g gyp pangyp node-gyp node-pre-gyp; npm cache clean --force")
+    && chown -R node /usr/local/lib /usr/local/include /usr/local/share /usr/local/bin
+
+RUN npm install -g n yarn gyp node-gyp node-pre-gyp \
+    && n $NODE_VERSION
 
 # install chrome headless
 RUN npm install -g protractor@4.0.14 minimist@1.2.0 && \
