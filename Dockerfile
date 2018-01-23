@@ -2,7 +2,7 @@
 
 FROM node:8
 LABEL name="mypost-consumer-testing-docker" \
-      maintainer="DDCTeamWookie" <DLDDCTeamWookie@auspost.com.au> \
+      maintainer="DDCTeamWookie" \
       version="1.0" \
       description="The docker container for MyPost Consumer automated tests"
 
